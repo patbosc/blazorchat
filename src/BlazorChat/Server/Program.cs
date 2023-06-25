@@ -1,5 +1,9 @@
+using BlazorChat.Server;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.ResponseCompression;
 using Serilog;
+
+
 
 Log.Debug("Starting application Builder");
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +23,38 @@ builder.Logging.AddSerilog(logger);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+
+
+// set the CORS policy - endpointroting with named policy 
+string[] origins = new[] { "https://localhost:7161" };
+
+var corsOriginsEnvVar = Environment.GetEnvironmentVariable("CORS_ORIGINS");
+if (!string.IsNullOrEmpty(corsOriginsEnvVar))
+{
+    origins = corsOriginsEnvVar.Split(";");
+}
+Log.Debug("CORS_ORIGINS: {CORS_ORIGINS}", origins);
+
+
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "SignalRPolicy", policy =>
+    {
+        policy
+            //.AllowAnyOrigin()
+            .WithOrigins(origins)
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials();
+            // also tried builder.AllowAnyOrigen();
+        });
+});
+
+
+Log.Debug("Adding SignalR");
+builder.Services.AddSignalR();
 
 Log.Debug("Creating the App");
 var app = builder.Build();
@@ -42,9 +78,14 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthorization();
+app.UseCors("SignalRPolicy");
+
 
 app.MapRazorPages();
 app.MapControllers();
+app.Map("/", () => $"Hello World! {Environment.GetEnvironmentVariable("POD_NAME")}"  );
+app.MapHub<ChatHub>("/chathub");
 app.MapFallbackToFile("index.html");
 
 Log.Debug("Starting the App");
