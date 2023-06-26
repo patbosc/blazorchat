@@ -43,13 +43,11 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: "SignalRPolicy", policy =>
     {
         policy
-            //.AllowAnyOrigin()
             .WithOrigins(origins)
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials();
-            // also tried builder.AllowAnyOrigen();
-        });
+    });
 });
 
 
