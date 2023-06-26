@@ -2,8 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+    <UserSecretsId>f4292c25-22b5-491d-9f96-3efdeded5147</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,6 +18,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Shared\BlazorChat.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="nginx.conf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  blazorchat.client:
+    image: ${DOCKER_REGISTRY-}blazorchatclient
+    build:
+      context: .
+      dockerfile: Client/Dockerfile
+
+  blazorchat.server:
+    image: ${DOCKER_REGISTRY-}blazorchatserver
+    build:
+      context: .
+      dockerfile: Server/Dockerfile
+
