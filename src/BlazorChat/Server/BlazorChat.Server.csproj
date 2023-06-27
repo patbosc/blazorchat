@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Client\BlazorChat.Client.csproj" />
-    <ProjectReference Include="..\Shared\BlazorChat.Shared.csproj" />
   </ItemGroup>
 
 
