@@ -1,12 +1,6 @@
-FROM mcr.microsoft.com/dotnet/aspnet:8.0-preview AS base
-USER app
-WORKDIR /app
-EXPOSE 80
-
-FROM mcr.microsoft.com/dotnet/sdk:8.0-preview AS build
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["Client/BlazorChat.Client.csproj", "Client/"]
-COPY ["Shared/BlazorChat.Shared.csproj", "Shared/"]
 RUN dotnet restore "Client/BlazorChat.Client.csproj"
 COPY . .
 WORKDIR "/src/Client"
