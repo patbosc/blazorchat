@@ -57,6 +57,23 @@ builder.Services.AddSignalR();
 Log.Debug("Creating the App");
 var app = builder.Build();
 
+app.UseSerilogRequestLogging();
+
+app.Use(async (context, next) =>
+{
+    // Log/Print all Headers
+    foreach (var header in context.Request.Headers)
+    {
+        Log.Information("Header: {Key}: {Value}", header.Key, header.Value);
+    }
+
+    Log.Information("Request Method: {Method}", context.Request.Method);
+    Log.Information("Request Scheme: {Scheme}", context.Request.Scheme);
+    Log.Information("Request Path: {Path}", context.Request.Path);
+
+    await next();
+});
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
