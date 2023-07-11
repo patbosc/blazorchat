@@ -36,7 +36,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        dotnet8        string baseUrl = "http://localhost:32769/chathub"; //TODO: HTPPS 
+        string baseUrl = "http://localhost:32769/chathub"; //TODO: HTPPS 
         baseUrl = Environment.GetEnvironmentVariable("SIGNALR_SERVER_URL") ?? baseUrl;
 
         hubConnection = new HubConnectionBuilder()
